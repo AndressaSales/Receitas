@@ -1,12 +1,12 @@
-import Form from "@/Components/Form";
 import Header from "@/Components/Header";
+import SearchReceitas from "@/Components/SearchReceitas";
 
 
 export default function FormReceitas(){
     return(
         <main>
             <Header />
-            <Form /> 
+            <SearchReceitas />
         </main>
     )
 }

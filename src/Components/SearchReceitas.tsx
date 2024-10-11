@@ -1,19 +1,22 @@
-import Image from "next/image"
-import { useState} from "react"
-
+import { useState, useEffect } from "react"
 
 export default function SearchReceitas(){
-    
-    const [ingredientes, SetIngredientes] = useState<string>('')
+
+    const [buscarIngredientes, SetBuscarIngredientes] = useState<string>('')
+    const [reciveIngedient, setRecibeIngedient] = useState([]) 
 
     const search = async () => {
-        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredientes}`)
-        const data = await res.json()
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${buscarIngredientes}`)
+        const ingredient = await res.json()
 
-        console.log(data)
-        SetIngredientes(data)
+        console.log(ingredient)
+        setRecibeIngedient(ingredient.meals)
+       
     }
 
+    useEffect(() => {
+        search()
+    }, [])
 
     return(
         <main className="bg-[#f4f4f4] w-[100%] h-[100vh]">
@@ -21,17 +24,31 @@ export default function SearchReceitas(){
                 <input 
                     type="text" placeholder="Digite o ingrediente..." 
                     className="outline-none border-[3px] border-[#000] border-t-transparent border-l-transparent border-r-transparent w-[450px] text-[22px] bg-transparent" 
-                    value={ingredientes}
-                    onChange={(e) => SetIngredientes(e.target.value)}
+                    value={buscarIngredientes}
+                    onChange={(e) => SetBuscarIngredientes(e.target.value)}
                 />
                 <button 
                     className="ml-3 bg-blue-600 text-[#fff]  rounded-[10px] font-bold text-[17px] py-[10px] px-[20px]" 
+                    type="submit"
                     onClick={search}
                 >Buscar</button>
             </div>
 
-            <div>
-
+            <div className="mx-auto max-w-6xl mb-16 mt-10 grid grid-cols-1 md:grid-cols-3 gap-7">
+                {
+                    reciveIngedient.map((i) => {
+                     return(
+                        <div className="border-2 border-[#ddd] py-4 cursor-pointer md:px-[10px] rounded-md b">
+                            <div className="items-center justify-center flex">
+                                <img src={i.strMealThumb} alt={i.strMeal} className="w-[250px] rounded-md" />
+                            </div>
+                            <div>
+                                <h2 className="text-center pt-[10px] font-bold font-mono text-[22px]">{i.strMeal}</h2>
+                            </div>
+                        </div>
+                     )
+                    })
+                }
             </div>
         </main>
     )

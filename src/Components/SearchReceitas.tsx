@@ -16,24 +16,21 @@ export default function SearchReceitas(){
     }
 
     useEffect(() => {
-        search()
+        search();
     }, [])
 
     const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const idDetalhes = []
+    
+    async function handleOpenModal(id:any) {
 
-    const handleOpenModal = () =>{
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+        const data = await res.json()
+
+        console.log(id)
+        console.log(data.meals)
         setModalOpen(!modalOpen)
     }
-
-    const [OpenId, setOpenId] = useState<number>(0)
-
-   async function getRecipesDetails(){
-    const response = await fetch(`https//www.themealdb.com/api/json/v1/1/lookup.php?i=${OpenId}`)
-    const data = response.json()
-
-    console.log(data)
-   }
-
 
     return(
         <main className="bg-[#f4f4f4e9] w-[100%] h-[100vh]">
@@ -55,19 +52,23 @@ export default function SearchReceitas(){
                 {
                     reciveIngedient.map((i) => {
                      return(
-                        <button className="border-2 border-[#ddd] py-4 cursor-pointer md:px-[10px] rounded-md b" onClick={getRecipesDetails} onCanPlayCapture={getRecipesDetails} value={OpenId}>
+                        <div key={i.idMeal} className="border-2 border-[#ddd] py-4 cursor-pointer md:px-[10px] rounded-md b" onClick={() =>  handleOpenModal(`${i.idMeal}`)}>
                             <div className="items-center justify-center flex">
                                 <img src={i.strMealThumb} alt={i.strMeal} className="w-[250px] rounded-md" />
                             </div>
                             <div>
                                 <h2 className="text-center pt-[10px] font-bold font-mono text-[22px]">{i.strMeal}</h2>
                             </div>
-                        </button>
+                        </div>
                      )
                     })
                 }
             </div>
-            <Modal isOpen={modalOpen} onClose={handleOpenModal} />
+            <Modal isOpen={modalOpen} onClose={handleOpenModal}>
+                <div>
+                    <h3>Ola</h3>
+                </div>
+            </Modal>
         </main>
     )
 }

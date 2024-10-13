@@ -1,9 +1,12 @@
+import { ReactNode } from "react"
+
 interface ModalP{
-    isOpen? : boolean,
-    onClose?: () => void
+    isOpen : boolean,
+    onClose: () => void,
+    children: ReactNode
 }
 
-export default function Modal({isOpen, onClose} : ModalP){
+export default function Modal({isOpen, onClose, children} : ModalP){
 
     if(!isOpen) return null
 
@@ -11,14 +14,14 @@ export default function Modal({isOpen, onClose} : ModalP){
         <>
             <div className="fixed inset-0 bg-[#000] bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
 
-                <div className="w-[600px] flex flex-col bg-[#fff]">
+                <div className="w-[600px] flex flex-col bg-[#fff] rounded-md ">
                     <div className="flex items-center justify-between">
-                        <h3 className="pl-4 font-light text-[22px]">Modal</h3>
-                        <button className=" text-[#f00] w-[30px] text-center mr-4 font-bold" onClick={onClose}>X</button>
+                        <h3 className="pl-4 font-light text-[22px]">Receitas</h3>
+                        <button className=" text-[#fff] bg-[#f00] w-[30px] text-center mr-4  px-[6px] rounded-md font-bold text-xl" onClick={onClose}>X</button>
                     </div>
-                    <hr />
+                    <hr/>
                     <div>
-                        ingredientes da receita
+                        {children}
                     </div>
                 </div>
 
